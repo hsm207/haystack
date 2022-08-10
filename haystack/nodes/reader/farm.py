@@ -37,7 +37,7 @@ class FARMReader(BaseReader):
     Transformer based model for extractive Question Answering using the FARM framework (https://github.com/deepset-ai/FARM).
     While the underlying model can vary (BERT, Roberta, DistilBERT, ...), the interface remains the same.
 
-    |  With a FARMReader, you can:
+    With a FARMReader, you can:
 
      - directly get predictions via predict()
      - fine-tune the model on QA data via train()
