@@ -31,31 +31,29 @@ class BM25Retriever(BaseRetriever):
                                      Otherwise at least one query term must be present in a document in order to be retrieved (i.e the OR operator is being used implicitly between query terms: "cozy fish restaurant" -> "cozy OR fish OR restaurant").
                                      Defaults to False.
         :param custom_query: query string as per Elasticsearch DSL with a mandatory query placeholder(query).
-
                              Optionally, ES `filter` clause can be added where the values of `terms` are placeholders
                              that get substituted during runtime. The placeholder(${filter_name_1}, ${filter_name_2}..)
                              names must match with the filters dict supplied in self.retrieve().
-                             ::
 
-                                 **An example custom_query:**
-                                 ```python
-                                    {
-                                        "size": 10,
-                                        "query": {
-                                            "bool": {
-                                                "should": [{"multi_match": {
-                                                    "query": ${query},                 // mandatory query placeholder
-                                                    "type": "most_fields",
-                                                    "fields": ["content", "title"]}}],
-                                                "filter": [                                 // optional custom filters
-                                                    {"terms": {"year": ${years}}},
-                                                    {"terms": {"quarter": ${quarters}}},
-                                                    {"range": {"date": {"gte": ${date}}}}
-                                                    ],
-                                            }
-                                        },
-                                    }
-                                 ```
+                             **An example custom_query:**
+                             ```python
+                             {
+                                 "size": 10,
+                                 "query": {
+                                     "bool": {
+                                         "should": [{"multi_match": {
+                                             "query": ${query},  # mandatory query placeholder
+                                             "type": "most_fields",
+                                             "fields": ["content", "title"]}}],
+                                         "filter": [  # optional custom filters
+                                             {"terms": {"year": ${years}}},
+                                             {"terms": {"quarter": ${quarters}}},
+                                             {"range": {"date": {"gte": ${date}}}}
+                                             ],
+                                     }
+                                 },
+                             }
+                             ```
 
                              **For this custom_query, a sample retrieve() could be:**
                              ```python
@@ -65,36 +63,34 @@ class BM25Retriever(BaseRetriever):
 
                              Optionally, highlighting can be defined by specifying Elasticsearch's highlight settings.
                              See https://www.elastic.co/guide/en/elasticsearch/reference/current/highlighting.html.
-                             You will find the highlighted output in the returned Document's meta field by key "highlighted".
-                             ::
+                             You will find the highlighted output in the returned Document's meta field by key `"highlighted"`.
 
-                                 **Example custom_query with highlighting:**
-                                 ```python
-                                    {
-                                        "size": 10,
-                                        "query": {
-                                            "bool": {
-                                                "should": [{"multi_match": {
-                                                    "query": ${query},                 // mandatory query placeholder
-                                                    "type": "most_fields",
-                                                    "fields": ["content", "title"]}}],
-                                            }
-                                        },
-                                        "highlight": {             // enable highlighting
-                                            "fields": {            // for fields content and title
-                                                "content": {},
-                                                "title": {}
-                                            }
-                                        },
-                                    }
-                                 ```
-
-                                 **For this custom_query, highlighting info can be accessed by:**
-                                 ```python
-                                 docs = self.retrieve(query="Why did the revenue increase?")
-                                 highlighted_content = docs[0].meta["highlighted"]["content"]
-                                 highlighted_title = docs[0].meta["highlighted"]["title"]
-                                 ```
+                             **Example custom_query with highlighting:**
+                             ```python
+                             {
+                                 "size": 10,
+                                 "query": {
+                                     "bool": {
+                                         "should": [{"multi_match": {
+                                             "query": ${query},  # mandatory query placeholder
+                                             "type": "most_fields",
+                                             "fields": ["content", "title"]}}],
+                                     }
+                                 },
+                                 "highlight": {  # enable highlighting
+                                     "fields": {  # for fields content and title
+                                         "content": {},
+                                         "title": {}
+                                     }
+                                 },
+                             }
+                             ```
+                             **For this custom_query, highlighting info can be accessed by:**
+                             ```python
+                             docs = self.retrieve(query="Why did the revenue increase?")
+                             highlighted_content = docs[0].meta["highlighted"]["content"]
+                             highlighted_title = docs[0].meta["highlighted"]["title"]
+                             ```
         :param top_k: How many documents to return per query.
         :param scale_score: Whether to scale the similarity score to the unit interval (range of [0,1]).
                             If true (default) similarity scores (e.g. cosine or dot_product) which naturally have a different value range will be scaled to a range of [0,1], where 1 means extremely relevant.
