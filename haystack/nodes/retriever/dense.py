@@ -76,14 +76,14 @@ class DensePassageRetriever(BaseRetriever):
         **Example:**
 
                 ```python
-                |    # remote model from FAIR
-                |    DensePassageRetriever(document_store=your_doc_store,
-                |                          query_embedding_model="facebook/dpr-question_encoder-single-nq-base",
-                |                          passage_embedding_model="facebook/dpr-ctx_encoder-single-nq-base")
-                |    # or from local path
-                |    DensePassageRetriever(document_store=your_doc_store,
-                |                          query_embedding_model="model_directory/question-encoder",
-                |                          passage_embedding_model="model_directory/context-encoder")
+                # remote model from FAIR
+                DensePassageRetriever(document_store=your_doc_store,
+                                      query_embedding_model="facebook/dpr-question_encoder-single-nq-base",
+                                      passage_embedding_model="facebook/dpr-ctx_encoder-single-nq-base")
+                # or from local path
+                DensePassageRetriever(document_store=your_doc_store,
+                                      query_embedding_model="model_directory/question-encoder",
+                                      passage_embedding_model="model_directory/context-encoder")
                 ```
 
         :param document_store: An instance of DocumentStore from which to retrieve documents.
@@ -331,7 +331,6 @@ class DensePassageRetriever(BaseRetriever):
         :param filters: Optional filters to narrow down the search space to documents whose metadata fulfill certain
                         conditions. Can be a single filter that will be applied to each query or a list of filters
                         (one filter per query).
-
                         Filters are defined as nested dictionaries. The keys of the dictionaries can be a logical
                         operator (`"$and"`, `"$or"`, `"$not"`), a comparison operator (`"$eq"`, `"$in"`, `"$gt"`,
                         `"$gte"`, `"$lt"`, `"$lte"`) or a metadata field name.

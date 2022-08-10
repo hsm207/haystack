@@ -858,10 +858,10 @@ class BaseElasticsearchDocumentStore(KeywordDocumentStore):
 
                                  **For this custom_query, highlighting info can be accessed by:**
                                  ```python
-                                  docs = self.retrieve(query="Why did the revenue increase?")
-                                  highlighted_content = docs[0].meta["highlighted"]["content"]
-                                  highlighted_title = docs[0].meta["highlighted"]["title"]
-                                  ```
+                                 docs = self.retrieve(query="Why did the revenue increase?")
+                                 highlighted_content = docs[0].meta["highlighted"]["content"]
+                                 highlighted_title = docs[0].meta["highlighted"]["title"]
+                                 ```
 
         :param index: The name of the index in the DocumentStore from which to retrieve documents
         :param headers: Custom HTTP headers to pass to elasticsearch client (e.g. {'Authorization': 'Basic YWRtaW46cm9vdA=='})
