@@ -48,7 +48,7 @@ class EarlyStopping:
         :param metric: name of dev set metric to monitor (default: loss) to get extracted from the 0th head or
                        a function that extracts a value from the trainer dev evaluation result.
                        NOTE: this is different from the metric to get specified for the processor which defines how
-                       to calculate one or more evaluation matric values from prediction/target sets, while this
+                       to calculate one or more evaluation metric values from prediction/target sets, while this
                        specifies the name of one particular such metric value or a method to calculate that value
                        from the result returned from a processor metric.
         :param mode: "min" or "max"

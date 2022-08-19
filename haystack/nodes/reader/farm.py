@@ -20,7 +20,7 @@ from haystack.modeling.infer import QAInferencer
 from haystack.modeling.model.optimization import initialize_optimizer
 from haystack.modeling.model.predictions import QAPred, QACandidate
 from haystack.modeling.model.adaptive_model import AdaptiveModel
-from haystack.modeling.training import Trainer, DistillationTrainer, TinyBERTDistillationTrainer
+from haystack.modeling.training import Trainer, DistillationTrainer, TinyBERTDistillationTrainer, EarlyStopping
 from haystack.modeling.evaluation import Evaluator
 from haystack.modeling.utils import set_all_seeds, initialize_device_settings
 
@@ -190,6 +190,7 @@ class FARMReader(BaseReader):
         tinybert: bool = False,
         processor: Optional[Processor] = None,
         grad_acc_steps: int = 1,
+        early_stopping: Optional[EarlyStopping] = None,
     ):
         if dev_filename:
             dev_split = 0
@@ -286,6 +287,7 @@ class FARMReader(BaseReader):
                 checkpoint_every=checkpoint_every,
                 checkpoints_to_keep=checkpoints_to_keep,
                 grad_acc_steps=grad_acc_steps,
+                early_stopping=early_stopping,
             )
 
         elif (
@@ -309,6 +311,7 @@ class FARMReader(BaseReader):
                 distillation_loss_weight=distillation_loss_weight,
                 temperature=temperature,
                 grad_acc_steps=grad_acc_steps,
+                early_stopping=early_stopping,
             )
         else:
             trainer = Trainer.create_or_load_checkpoint(
@@ -326,6 +329,7 @@ class FARMReader(BaseReader):
                 checkpoint_every=checkpoint_every,
                 checkpoints_to_keep=checkpoints_to_keep,
                 grad_acc_steps=grad_acc_steps,
+                early_stopping=early_stopping,
             )
 
         # 5. Let it grow!
@@ -356,6 +360,7 @@ class FARMReader(BaseReader):
         caching: bool = False,
         cache_path: Path = Path("cache/data_silo"),
         grad_acc_steps: int = 1,
+        early_stopping: Optional[EarlyStopping] = None,
     ):
         """
         Fine-tune a model on a QA dataset. Options:
@@ -396,8 +401,8 @@ class FARMReader(BaseReader):
         :param checkpoints_to_keep: maximum number of train checkpoints to save.
         :param caching: whether or not to use caching for preprocessed dataset
         :param cache_path: Path to cache the preprocessed dataset
-        :param processor: The processor to use for preprocessing. If None, the default SquadProcessor is used.
         :param grad_acc_steps: The number of steps to accumulate gradients for before performing a backward pass.
+        :param early_stopping: An initialized EarlyStopping object to control early stopping and saving of best models.
         :return: None
         """
         return self._training_procedure(
@@ -423,6 +428,7 @@ class FARMReader(BaseReader):
             caching=caching,
             cache_path=cache_path,
             grad_acc_steps=grad_acc_steps,
+            early_stopping=early_stopping,
         )
 
     def distil_prediction_layer_from(
