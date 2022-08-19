@@ -755,6 +755,7 @@ HUGGINGFACE_TO_HAYSTACK: Dict[str, Union[Type[HFLanguageModel], Type[DPREncoder]
 HUGGINGFACE_CAPITALIZE = {
     "xlm-roberta": "XLMRoberta",
     "deberta-v2": "DebertaV2",
+    "big_bird": "BigBird",
     **{k.lower(): k for k in HUGGINGFACE_TO_HAYSTACK.keys()},
 }
 
@@ -770,6 +771,7 @@ NAME_HINTS: Dict[str, str] = {
     "[dpr]?.*context.*encoder": "DPRContextEncoder",
     "[dpr]?.*ctx.*encoder": "DPRContextEncoder",
     "deberta-v2": "DebertaV2",
+    "big_bird": "BigBird",
 }
 
 #: Parameters or the pooler of models that don't have their own pooler
