@@ -319,6 +319,8 @@ class QuestionAnsweringHead(PredictionHead):
             # init empty head
             head = cls(layer_dims=[full_qa_model.config.hidden_size, 2], task_name="question_answering")
             # transfer weights for head from full model
+            #import pdb; pdb.set_trace()
+            #FIXME For BigBirdForQuestionAnsweringHead qa_outputs is located at full_qa_model.qa_classifier.qa_outputs
             head.feed_forward.feed_forward[0].load_state_dict(full_qa_model.qa_outputs.state_dict())
             del full_qa_model
 
